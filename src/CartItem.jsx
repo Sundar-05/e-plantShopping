@@ -1,71 +1,38 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { addItem, removeItem, updateQuantity } from './CreateSlice';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { updateQuantity, addItem, removeItem } from './createSlice';
 
-const CartItems = () => {
-    const [showItems, setShowItems] = useState(false);
-    const [numberOfPlants, setNumberOfPlants] = useState(1);
-
-    const cartItems = useSelector((state) => state.cart.items) || [];
+const CartItem = ({ item }) => {
     const dispatch = useDispatch();
 
-    const handleIncrement = (itemName) => {
-        dispatch(updateQuantity({ name: itemName, quantity: 1 }));
+    const handleIncrement = () => {
+        dispatch(updateQuantity({ name: item.name, quantity: 1 }));
     };
 
-    const handleDecrement = (itemName) => {
-        dispatch(updateQuantity({ name: itemName, quantity: -1 }));
+    const handleDecrement = () => {
+        dispatch(updateQuantity({ name: item.name, quantity: -1 }));
     };
 
-    const handleRemove = (itemName) => {
-        dispatch(removeItem({ name: itemName }));
+    const handleRemove = () => {
+        dispatch(removeItem(item.name));
     };
 
-    const calculateSubtotal = (item) => {
+    const calculateSubtotal = () => {
         return item.cost * item.quantity;
-    };
-
-    const calculateTotalQuantity = () => {
-        let totalQuantity = 0;
-        cartItems.forEach((item) => {
-            totalQuantity += item.quantity;
-        });
-        return totalQuantity;
-    };
-
-    const calculateTotalCost = () => {
-        let totalCost = 0;
-        cartItems.forEach((item) => {
-            totalCost += item.cost * item.quantity;
-        });
-        return totalCost;
-    };
-
-    const handleToggleItems = () => {
-        setShowItems(!showItems);
     };
 
     return (
         <div>
-            <h2>Cart Items</h2>
-            {cartItems.map((item) => (
-                <div key={item.name}>
-                    <h3>{item.name}</h3>
-                    <p>Cost: {item.cost}</p>
-                    <p>Quantity: {item.quantity}</p>
-                    <p>Subtotal: {calculateSubtotal(item)}</p>
-                    <button onClick={() => handleIncrement(item.name)}>Increase Quantity</button>
-                    <button onClick={() => handleDecrement(item.name)}>Decrease Quantity</button>
-                    <button onClick={() => handleRemove(item.name)}>Remove</button>
-                </div>
-            ))}
-            <button onClick={handleToggleItems}>
-                {showItems ? 'Hide Items' : 'Show Items'}
-            </button>
-            <h3>Total Quantity: {calculateTotalQuantity()}</h3>
-            <h3>Total Cost: {calculateTotalCost()}</h3>
+            <h3>{item.name}</h3>
+            <img src={item.image} alt={item.name} />
+            <p>Cost: {item.cost}</p>
+            <p>Quantity: {item.quantity}</p>
+            <p>Subtotal: {calculateSubtotal()}</p>
+            <button onClick={handleIncrement}>Increase Quantity</button>
+            <button onClick={handleDecrement}>Decrease Quantity</button>
+            <button onClick={handleRemove}>Remove</button>
         </div>
     );
 };
 
-export default CartItems;
+export default CartItem;
