@@ -286,9 +286,8 @@ function ProductList() {
                         <div className="product-list">
                             {category.plants.map((plant, plantIndex) => (
                                 <div className="product-card" key={plantIndex}>
-                                    <img className="product-image" src={plant.image} alt={plant.name} />
                                     <div className="product-title">{plant.name}</div>
-                                    <div className="product-title">{plant.image}</div>
+                                    <img className="product-image" src={plant.image} alt={plant.name} />
                                     <div className="product-title">{plant.description}</div>
                                     <div className="product-title">{plant.cost}</div>
                                     <button 
